@@ -6,6 +6,7 @@ import { loadFull } from "tsparticles";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+
 export default function HomePage() {
   const [showProjects, setShowProjects] = useState(true);
   const [aboutRef, aboutInView] = useInView({ triggerOnce: true, threshold: 0.2 });
