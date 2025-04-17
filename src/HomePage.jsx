@@ -46,9 +46,9 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    if (aboutInView && isTyping && !sessionStorage.getItem("voicePlayed")) {
+    if (showTypewriter && !sessionStorage.getItem("voicePlayed")) {
       const playAudio = () => {
-        const audio = new Audio('/ai-audio.mp3');
+        const audio = new Audio("/ai-audio.mp3");
         audio.volume = 0.85;
         audio.play()
           .then(() => {
@@ -62,7 +62,7 @@ export default function HomePage() {
       // Delay slightly to mimic post-render interaction
       setTimeout(playAudio, 300);
     }
-  }, [aboutInView]);
+  }, [showTypewriter]);
 
   useEffect(() => {
     console.log("Typing finished?", isTypingFinished);
@@ -139,94 +139,88 @@ export default function HomePage() {
   </motion.section>
           
 
-        {isTypingFinished && showProjects && (
-          <div className="flex gap-2 mt-4 justify-center">
-            <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
-              setFilter("all");
-              setFilteredProjects(projects);
-            }}>All Projects</Button>
+        <div className="flex gap-2 mt-4 justify-center">
+          <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
+            setFilter("all");
+            setFilteredProjects(projects);
+          }}>All Projects</Button>
 
-            <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
-              setFilter("AI");
-              setFilteredProjects(projects.filter(proj => 
-                proj.name.toLowerCase().includes("ai") || proj.description && proj.description.toLowerCase().includes("ai") || proj.description && proj.description.toLowerCase().includes("automation")
-              ));
-            }}>AI</Button>
+          <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
+            setFilter("AI");
+            setFilteredProjects(projects.filter(proj => 
+              proj.name.toLowerCase().includes("ai") || proj.description && proj.description.toLowerCase().includes("ai") || proj.description && proj.description.toLowerCase().includes("automation")
+            ));
+          }}>AI</Button>
 
-            <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
-              setFilter("Quantum");
-              setFilteredProjects(projects.filter(proj => 
-                proj.name.toLowerCase().includes("quantum") || (proj.description && proj.description.toLowerCase().includes("quantum"))
-              ));
-            }}>Quantum</Button>
+          <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
+            setFilter("Quantum");
+            setFilteredProjects(projects.filter(proj => 
+              proj.name.toLowerCase().includes("quantum") || (proj.description && proj.description.toLowerCase().includes("quantum"))
+            ));
+          }}>Quantum</Button>
 
-            <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
-              setFilter("ML");
-              setFilteredProjects(projects.filter(proj => 
-                proj.name.toLowerCase().includes("machine learning","ml") || (proj.description && proj.description.toLowerCase().includes("Machine Learning"))
-              ));
-            }}>Machine Learning</Button>
-            
-            <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
-              setFilter("Repository");
-              setFilteredProjects(projects.filter(proj => 
-                proj.name.toLowerCase().includes("python","opencv","SQL") || (proj.description && proj.description.toLowerCase().includes("concept"))
-              ));
-            }}>Repository</Button>
-          </div>
-        )}
+          <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
+            setFilter("ML");
+            setFilteredProjects(projects.filter(proj => 
+              proj.name.toLowerCase().includes("machine learning","ml") || (proj.description && proj.description.toLowerCase().includes("Machine Learning"))
+            ));
+          }}>Machine Learning</Button>
+          
+          <Button variant="ghost" className="border border-cyan-400 text-cyan-300 bg-transparent backdrop-blur-sm hover:bg-cyan-800/10" onClick={() => {
+            setFilter("Repository");
+            setFilteredProjects(projects.filter(proj => 
+              proj.name.toLowerCase().includes("python","opencv","SQL") || (proj.description && proj.description.toLowerCase().includes("concept"))
+            ));
+          }}>Repository</Button>
+        </div>
 
-        {isTypingFinished && (
-          <motion.div
-            className="grid gap-4 mt-6 max-w-3xl mx-auto"
-            ref={projectRef}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {filteredProjects.map((proj) => (
-              <Card key={proj.id} className="bg-[#1c2331] rounded-lg shadow-xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-2">
-                    <img src={proj.owner?.avatar_url || "https://via.placeholder.com/48"} alt={proj.owner?.login || "Owner"} className="w-12 h-12 rounded-full" />
-                    <h3 className="text-xl font-bold text-cyan-200">{proj.name}</h3>
-                  </div>
-                  <p className="text-gray-200 mb-2">{proj.description}</p>
-                  <a
-                    href={proj.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-cyan-400 hover:underline"
-                  >
-                    View on GitHub
-                  </a>
-                </CardContent>
-              </Card>
-            ))}
-          </motion.div>
-        )}
+        <motion.div
+          className="grid gap-4 mt-6 max-w-3xl mx-auto"
+          ref={projectRef}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          {filteredProjects.map((proj) => (
+            <Card key={proj.id} className="bg-[#1c2331] rounded-lg shadow-xl">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-2">
+                  <img src={proj.owner?.avatar_url || "https://via.placeholder.com/48"} alt={proj.owner?.login || "Owner"} className="w-12 h-12 rounded-full" />
+                  <h3 className="text-xl font-bold text-cyan-200">{proj.name}</h3>
+                </div>
+                <p className="text-gray-200 mb-2">{proj.description}</p>
+                <a
+                  href={proj.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:underline"
+                >
+                  View on GitHub
+                </a>
+              </CardContent>
+            </Card>
+          ))}
+        </motion.div>
 
-        {isTypingFinished && (
-          <motion.section
-            className="max-w-3xl mx-auto mt-10"
-            ref={resumeRef}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-2xl font-semibold text-cyan-300 mb-4">Resume</h2>
-            <iframe
-              src="/resume.pdf"
-              title="Sharvin Soham Resume"
-              className="w-full h-[600px] bg-white rounded-xl shadow-xl"
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
-          </motion.section>
-        )}
+        <motion.section
+          className="max-w-3xl mx-auto mt-10"
+          ref={resumeRef}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-semibold text-cyan-300 mb-4">Resume</h2>
+          <iframe
+            src="/resume.pdf"
+            title="Sharvin Soham Resume"
+            className="w-full h-[600px] bg-white rounded-xl shadow-xl"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        </motion.section>
 
         <footer className="text-center mt-12 text-sm text-gray-200" style={{ textShadow: '2px 2px 5px rgba(0, 0, 0, 0.7)' }}>
           Connect: 
